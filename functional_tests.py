@@ -20,13 +20,13 @@ class NewVisitorTest(unittest.TestCase):
 
 		self.assertIn('To-Do',self.browser.title)
 		header_text = self.browser.find_element_by_tag_name('h1').text
-		self.fail('Finish the test!')
+		self.assertIn('To-Do',header_text)
 
 		#应用邀请他输入一个待办事项
 		inputbox = self.browser.find_element_by_id('id_new_item')
 		self.assertEqual(
 			inputbox.get_attribute('placeholder'),
-			'Enter a To-Do item'
+			'Enter a to-do item'
 		)
 
 		#他在一个文本框中输入了“购买乒乓球”
@@ -38,9 +38,10 @@ class NewVisitorTest(unittest.TestCase):
 		inputbox.send_keys(Keys.ENTER)
 
 		table = self.browser.find_element_by_id('id_list_table')
-		rows = table.find_element_by_tag_name('tr')
-		self.asertTrue(
-			any(row.text == '1:Buy PingPang' for row in rows)
+		rows = table.find_elements_by_tag_name('tr')
+		self.assertTrue(
+			any(row.text == '1:Buy PingPang' for row in rows),
+			"New to-do item did not appear in table"
 		)
 
 		#页面中又显示了一个文本框，可以输入其他的待办事项
