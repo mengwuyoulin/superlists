@@ -68,7 +68,7 @@ class NewVisitorTest(LiveServerTestCase):
 		#小路访问首页
 		#页面看不到小明的清单
 		self.browser.get(self.live_server_url)
-		page_text = self.browser.find_elements_by_tag_name('body').text
+		page_text = self.browser.find_element_by_tag_name('body').text
 		self.assertNoIn('约上朋友打乒乓球',page_text)
 		self.assertNoIn('买乒乓球',page_text)
 
@@ -88,7 +88,7 @@ class NewVisitorTest(LiveServerTestCase):
 		self.assertNoIn('约上朋友打乒乓球',page_text)
 		self.assertIn('买牛奶',page_text)
 		#而且页面中有一些文字解说这个功能
-		self.fail('Finiesh the test!')
+	
 
 		#他访问那个URL，发现他的待办事项列表还在
 
