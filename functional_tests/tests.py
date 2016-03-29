@@ -38,36 +38,55 @@ class NewVisitorTest(LiveServerTestCase):
 
 		#他在一个文本框中输入了“购买乒乓球”
 		#小明是一个乒乓球爱好者
-		inputbox.send_keys('Buy PingPang')
+		inputbox.send_keys('买乒乓球')
 
-		#他按回车键后，页面更新了
+		#他按回车键后，他被带到了一个新URL
 		#待办事项表格中显示了“1：购买乒乓球”
 		inputbox.send_keys(Keys.ENTER)
-		self.check_for_row_in_list_table('1:Buy PingPang')
+		edith_list_url = self.browser.current_url
+		self.assertRegex(edith_list_url,'/lists/.+')
+		self.check_for_row_in_list_table('1:买乒乓球')
 	
-		#代码异味，要重写的部分
-		#table = self.browser.find_element_by_id('id_list_table')		
-		#rows = table.find_elements_by_tag_name('tr')
-		#self.assertTrue(
-		#	any(row.text == '1:Buy PingPang' for row in rows),
-		#	"New to-do item did not appear in table -- its text was:\n%s"%(table.text,)
-		#)
-		#self.assertIn('1:Buy PingPang',[row.text for row in rows])
-		
 		#页面中又显示了一个文本框，可以输入其他的待办事项
 		#他输入了“约上小何去打乒乓球”
 		#小明做事很有计划
 		inputbox=self.browser.find_element_by_id('id_new_item')
-		inputbox.send_keys("Meet xiaohe to play PingPang")
+		inputbox.send_keys("约上朋友打乒乓球")
 		inputbox.send_keys(Keys.ENTER)
 		
 		#页面再次刷新，他的清单中显示了这两个待办事项
-		self.check_for_row_in_list_table('1:Buy PingPang')
-		self.check_for_row_in_list_table('2:Meet xiaohe to play PingPang')
+		self.check_for_row_in_list_table('1:买乒乓球')
+		self.check_for_row_in_list_table('2:约上朋友打乒乓球')
 		
-		#小明想知道这个网站是否会记住他的清单
+		#现在一个叫小路的新用户访问了网站
 
-		#他看到网站为他生成了一个唯一的URL
+		##我们使用一个新浏览器会话
+		self.browser.quit()
+		##确保小明的信息不回从cookie中泄露出来#
+		self.browser = webdriver.Firefox()
+
+		#小路访问首页
+		#页面看不到小明的清单
+		self.browser.get(self.live_server_url)
+		page_text = self.browser.find_elements_by_tag_name('body').text
+		self.assertNoIn('约上朋友打乒乓球',page_text)
+		self.assertNoIn('买乒乓球',page_text)
+
+		#小路输入一个新待办事项，新建一个清单
+		#他不像小明那么兴趣盎然
+		inputbox = self.browser.find_element_by_id('id_new_item')
+		inputbox.send_keys('买牛奶')
+		inputbox.send_keys(Keys.ENTER)
+
+		#小路看到网站为他生成了一个唯一的URL
+		xiaolu_list_url = self.browser.current_url
+		self.assertRegex(xiaolu_list_url,'/lists/.+')
+		self.assertNoEqual(xiaolu_list_url,edith_list_url)
+
+		#这个页面还是没有小明的清单
+		page_text = self.browser.find_element_by_tag_name('body').text
+		self.assertNoIn('约上朋友打乒乓球',page_text)
+		self.assertIn('买牛奶',page_text)
 		#而且页面中有一些文字解说这个功能
 		self.fail('Finiesh the test!')
 
