@@ -1,10 +1,9 @@
 # coding:utf8
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-import unittest
-import time
+from django.test import LiveServerTestCase
 
-class NewVisitorTest(unittest.TestCase):
+class NewVisitorTest(LiveServerTestCase):
 	"""docstring for NewVisitorTest"""
 	def setUp(self):
 		self.browser = webdriver.Firefox()
@@ -22,7 +21,7 @@ class NewVisitorTest(unittest.TestCase):
 		#小明听说有一个很酷的在线待办事项应用
 		#他去看了这个应用的首页
 
-		self.browser.get("http://localhost:8000")
+		self.browser.get(self.live_server_url)
 
 		#他注意到网页的标题和头部都包含“To-Do”这个词
 
@@ -64,10 +63,10 @@ class NewVisitorTest(unittest.TestCase):
 		
 		#页面再次刷新，他的清单中显示了这两个待办事项
 		self.check_for_row_in_list_table('1:Buy PingPang')
-		self.check_for_row_in_list_table('6:Meet xiaohe to play PingPang')
+		self.check_for_row_in_list_table('2:Meet xiaohe to play PingPang')
 		
 		#小明想知道这个网站是否会记住他的清单
-		time.sleep(3)
+
 		#他看到网站为他生成了一个唯一的URL
 		#而且页面中有一些文字解说这个功能
 		self.fail('Finiesh the test!')
@@ -76,7 +75,4 @@ class NewVisitorTest(unittest.TestCase):
 
 		#他很满意，就去睡觉了
 
-
-if __name__ == '__main__':
-	unittest.main(warnings='ignore')
 		
