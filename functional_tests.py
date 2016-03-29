@@ -6,7 +6,7 @@ import unittest
 class NewVisitorTest(unittest.TestCase):
 	"""docstring for NewVisitorTest"""
 	def setUp(self):
-		self.browser = webdriver.Ie()
+		self.browser = webdriver.Firefox()
 		self.browser.implicitly_wait(2)
 	def tearDown(self):
 		self.browser.quit()
@@ -37,23 +37,33 @@ class NewVisitorTest(unittest.TestCase):
 		#待办事项表格中显示了“1：购买乒乓球”
 		inputbox.send_keys(Keys.ENTER)
 
-		table = self.browser.find_element_by_id('id_list_table')
+	
+		table = self.browser.find_element_by_id('id_list_table')		
 		rows = table.find_elements_by_tag_name('tr')
-		self.assertTrue(
-			any(row.text == '1:Buy PingPang' for row in rows),
-			"New to-do item did not appear in table"
-		)
-
+		#self.assertTrue(
+		#	any(row.text == '1:Buy PingPang' for row in rows),
+		#	"New to-do item did not appear in table -- its text was:\n%s"%(table.text,)
+		#)
+		self.assertIn('1:Buy PingPang',[row.text for row in rows])
 		#页面中又显示了一个文本框，可以输入其他的待办事项
 		#他输入了“约上小何去打乒乓球”
 		#小明做事很有计划
-		self.fail('Finiesh the test!')
+		inputbox=self.browser.find_element_by_id('id_new_item')
+		inputbox.send_keys("Meet xiaohe to play PingPang")
+		inputbox.send_keys(keys.ENTER)
+		
 		#页面再次刷新，他的清单中显示了这两个待办事项
-
+		table = self.browser.find_element_by_id('id_list_table')
+		rows = table.find_elements_by_tag_name('tr')
+		self.assertIn('1:Buy PingPang',[row.text for row in rows])
+		self.assertIn('2:Meet xiaohe to play PingPang',
+			[row.text for row in rows]
+		)
 		#小明想知道这个网站是否会记住他的清单
 
 		#他看到网站为他生成了一个唯一的URL
 		#而且页面中有一些文字解说这个功能
+		self.fail('Finiesh the test!')
 
 		#他访问那个URL，发现他的待办事项列表还在
 
