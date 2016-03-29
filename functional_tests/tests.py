@@ -69,8 +69,8 @@ class NewVisitorTest(LiveServerTestCase):
 		#页面看不到小明的清单
 		self.browser.get(self.live_server_url)
 		page_text = self.browser.find_element_by_tag_name('body').text
-		self.assertNoIn('约上朋友打乒乓球',page_text)
-		self.assertNoIn('买乒乓球',page_text)
+		self.assertNotIn('约上朋友打乒乓球',page_text)
+		self.assertNotIn('买乒乓球',page_text)
 
 		#小路输入一个新待办事项，新建一个清单
 		#他不像小明那么兴趣盎然
@@ -81,11 +81,11 @@ class NewVisitorTest(LiveServerTestCase):
 		#小路看到网站为他生成了一个唯一的URL
 		xiaolu_list_url = self.browser.current_url
 		self.assertRegex(xiaolu_list_url,'/lists/.+')
-		self.assertNoEqual(xiaolu_list_url,edith_list_url)
+		self.assertNotEqual(xiaolu_list_url,edith_list_url)
 
 		#这个页面还是没有小明的清单
 		page_text = self.browser.find_element_by_tag_name('body').text
-		self.assertNoIn('约上朋友打乒乓球',page_text)
+		self.assertNotIn('约上朋友打乒乓球',page_text)
 		self.assertIn('买牛奶',page_text)
 		#而且页面中有一些文字解说这个功能
 	
