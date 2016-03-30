@@ -6,14 +6,13 @@ from lists.models import Item
 
 @csrf_exempt# Create your views here.
 def home_page(request):
-	#new_item_text是POST请求中的数据，或者空字符串
-	if request.method == 'POST':
-		#.objects.create是创建新Item对象的简化方式，无需调用.save()
-		Item.objects.create(text=request.POST['item_text'])
-		return redirect('/lists/the-only-list-in-the-world/')
 	return render(request,'home.html')
-	
+
 @csrf_exempt
 def view_list(request):
 	items = Item.objects.all()
 	return render(request,'list.html',{'items':items})
+@csrf_exempt
+def new_list(request):
+	Item.objects.create(text=request.POST['item_text'])
+	return redirect('/lists/the-only-list-in-the-world/')
