@@ -6,7 +6,7 @@ from django.test import LiveServerTestCase
 class NewVisitorTest(LiveServerTestCase):
 	"""docstring for NewVisitorTest"""
 	def setUp(self):
-		self.browser = webdriver.Firefox()
+		self.browser = webdriver.Ie()
 		self.browser.implicitly_wait(2)
 
 	def tearDown(self):
@@ -16,6 +16,29 @@ class NewVisitorTest(LiveServerTestCase):
 		table = self.browser.find_element_by_id('id_list_table')
 		rows = table.find_elements_by_tag_name('tr')
 		self.assertIn(row_text,[row.text for row in rows])
+
+
+	def test_layout_and_styling(self):
+		#小明访问首页
+		self.browser.get(self.live_server_url)
+		self.browser.set_window_size(1024,768)
+
+		#他看到输入框完美地居中显示
+		inputbox = self.browser.find_element_by_id('id_new_item')
+		self.assertAlmostEqual(
+			inputbox.location['x']+inputbox.size['width']/2,
+			512,
+			delta =20
+		)
+
+		#他新建了一个清单，看到输入框仍完美地居中显示
+		inputbox.send_keys('testing\n')
+		inputbox = self.browser.find_element_by_id('id_new_item')
+		self.assertAlmostEqual(
+			inputbox.location['x']+inputbox.size['width']/2,
+			512,
+			delta =20
+		)
 
 	def test_can_start_a_list_and_retrieve_it_later(self):
 		#小明听说有一个很酷的在线待办事项应用
@@ -63,7 +86,7 @@ class NewVisitorTest(LiveServerTestCase):
 		##我们使用一个新浏览器会话
 		self.browser.quit()
 		##确保小明的信息不回从cookie中泄露出来#
-		self.browser = webdriver.Firefox()
+		self.browser = webdriver.Ie()
 
 		#小路访问首页
 		#页面看不到小明的清单
@@ -93,5 +116,7 @@ class NewVisitorTest(LiveServerTestCase):
 		#他访问那个URL，发现他的待办事项列表还在
 
 		#他很满意，就去睡觉了
+
+
 
 		
