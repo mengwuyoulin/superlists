@@ -1,15 +1,16 @@
 # coding:utf8
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-from django.test import LiveServerTestCase
+from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 
-class NewVisitorTest(LiveServerTestCase):
+class NewVisitorTest(StaticLiveServerTestCase):
 	"""docstring for NewVisitorTest"""
 	def setUp(self):
-		self.browser = webdriver.Ie()
+		self.browser = webdriver.Firefox()
 		self.browser.implicitly_wait(2)
 
 	def tearDown(self):
+		self.browser.refresh()
 		self.browser.quit()
 
 	def check_for_row_in_list_table(self,row_text):
@@ -86,7 +87,7 @@ class NewVisitorTest(LiveServerTestCase):
 		##我们使用一个新浏览器会话
 		self.browser.quit()
 		##确保小明的信息不回从cookie中泄露出来#
-		self.browser = webdriver.Ie()
+		self.browser = webdriver.Firefox()
 
 		#小路访问首页
 		#页面看不到小明的清单
