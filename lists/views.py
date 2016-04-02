@@ -19,7 +19,7 @@ def view_list(request,list_id):
 			item = Item(text=request.POST['item_text'],list=list_)
 			item.full_clean()
 			item.save()
-			return redirect('/lists/%d/' % (list_.id,))
+			return redirect(list_)
 		except ValidationError:
 			error = "提示待办事项不能为空"
 			
@@ -37,4 +37,4 @@ def new_list(request):
 		error = "提示待办事项不能为空"
 		return render(request,'home.html',{'error':error})
 	
-	return redirect('/lists/%d/' % (list_.id,))
+	return redirect(list_)

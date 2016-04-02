@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.urlresolvers import reverse
 
 # Create your models here.
 #给Item类提供save方法，也为了让这个类编程真正的Django模型，要让它继承Model类
@@ -6,7 +7,8 @@ from django.db import models
 #但其他列都要自行定义
 
 class List(models.Model):
-	pass
+	def get_absolute_url(self):
+		return reverse('view_list',args=[self.id])
 
 class Item(models.Model):
 	text = models.TextField(default='')
