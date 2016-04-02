@@ -1,6 +1,7 @@
 from django.shortcuts import redirect,render
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.core.exceptions import ValidationError
 
 from lists.models import Item,List
 
@@ -24,3 +25,17 @@ def add_item(request,list_id):
 	list_ = List.objects.get(id = list_id)
 	Item.objects.create(text=request.POST['item_text'],list=list_)
 	return redirect('/lists/%d/' % (list_.id,))
+
+@csrf_exempt
+def new_list(request):
+	list_ = List.objects.create()
+	item = Item.objects.create(text=request.POST['item_text'],list = list_)
+	try:
+		item.full_clean()
+		item.save()
+	except ValidationError:
+		list_.delete()
+		error = "提示待办事项不能为空"
+		return render(request,'home.html',{"error":error})
+	
+	return redirect('/lists/%d/'%(list_.id),)
