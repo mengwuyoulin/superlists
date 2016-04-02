@@ -18,7 +18,7 @@ class NewVisitorTest(FunctionalTest):
 		self.assertIn('开始一个任务',header_text)
 
 		#应用邀请他输入一个待办事项
-		inputbox = self.browser.find_element_by_id('id_new_item')
+		inputbox = self.get_item_input_box()
 		self.assertEqual(
 			inputbox.get_attribute('placeholder'),
 			'请输入任务名称'
@@ -38,7 +38,7 @@ class NewVisitorTest(FunctionalTest):
 		#页面中又显示了一个文本框，可以输入其他的待办事项
 		#他输入了“约上小何去打乒乓球”
 		#小明做事很有计划
-		inputbox=self.browser.find_element_by_id('id_new_item')
+		inputbox=self.get_item_input_box()
 		inputbox.send_keys("约上朋友打乒乓球")
 		inputbox.send_keys(Keys.ENTER)
 		
@@ -62,7 +62,7 @@ class NewVisitorTest(FunctionalTest):
 
 		#小路输入一个新待办事项，新建一个清单
 		#他不像小明那么兴趣盎然
-		inputbox = self.browser.find_element_by_id('id_new_item')
+		inputbox = self.get_item_input_box()
 		inputbox.send_keys('买牛奶')
 		inputbox.send_keys(Keys.ENTER)
 
