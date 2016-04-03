@@ -1,7 +1,7 @@
 from django import forms
 from lists.models import Item
 
-EMPTY_LIST_ERROR = "不能输入空事项"
+EMPTY_LIST_ERROR = "待办事项不能为空"
 
 class ItemForm(forms.models.ModelForm):
 
@@ -17,3 +17,7 @@ class ItemForm(forms.models.ModelForm):
 		error_messages = {
 			'text':{'required':EMPTY_LIST_ERROR}
 		}
+
+	def save(self,for_list):
+		self.instance.list = for_list #.instance属性：修改或创建数据库的对象
+		return super().save()
