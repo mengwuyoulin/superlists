@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="ch">
 <head>
 	<title>To-Do Lists</title>
 	<meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -13,13 +13,15 @@
 				<div class="text-center">
 					<h1>{% block header_text %}{% endblock %}</h1>
 					<form method="POST" action="{% block form_action %}{% endblock %}">
-						<input name="item_text" id="id_new_item" 
+						{{ form.text }}
+						<input name="text" id="id_text" 
 								class="form-control input-lg" 
 								placeholder="请输入任务名称" 
 						/>
-						{% if error %}
+						{% csrf_token %}
+						{% if form.errors %}
 							<div class="form-group has-error">
-								<span class="help-block">{{ error }}</span>
+								<span class="help-block">{{ form.text.errors }}</span>
 							</div>
 						{% endif %}
 					</form>

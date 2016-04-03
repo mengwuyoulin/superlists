@@ -38,7 +38,7 @@ class NewVisitorTest(FunctionalTest):
 		#页面中又显示了一个文本框，可以输入其他的待办事项
 		#他输入了“约上小何去打乒乓球”
 		#小明做事很有计划
-		inputbox=self.get_item_input_box()
+		inputbox = self.get_item_input_box()
 		inputbox.send_keys("约上朋友打乒乓球")
 		inputbox.send_keys(Keys.ENTER)
 		
