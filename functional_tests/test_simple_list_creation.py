@@ -9,7 +9,7 @@ class NewVisitorTest(FunctionalTest):
 		#小明听说有一个很酷的在线待办事项应用
 		#他去看了这个应用的首页
 
-		self.browser.get(self.live_server_url)
+		self.browser.get(self.server_url)
 
 		#他注意到网页的标题和头部都包含“To-Do”这个词
 

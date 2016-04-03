@@ -3,10 +3,24 @@ from .base import FunctionalTest
 
 class ItemValidationTest(FunctionalTest):
 	"""docstring for ItemValidationTest"""
+	def test_cannot_add_duplicate_items(self):
+		#小明访问首页，新建了一个清单
+		self.browser.get(self.server_url)
+		self.get_item_input_box().send_keys('慢跑健身\n')
+		self.check_for_row_in_list_table('1:慢跑健身')
+
+		#他不小心输入了一个重复的待办事项
+		self.get_item_input_box().send_keys('慢跑健身\n')
+
+		#他看到有一条帮助的错误消息
+		self.check_for_row_in_list_table('1:慢跑健身')
+		error = self.browser.find_element_by_css_selector('.has-error')
+		self.assertEqual(error.text,"你已经添加过此事项！")
+
 	def test_cannot_add_empty_list_items(self):
 		#小明不小心提交了一个空待办事项
 		#输入框中没输入内容，他就按下了回车键
-		self.browser.get(self.live_server_url)
+		self.browser.get(self.server_url)
 		self.get_item_input_box().send_keys('\n')
 
 		#首页刷新了，显示一个错误消息

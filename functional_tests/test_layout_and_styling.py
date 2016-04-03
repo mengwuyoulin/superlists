@@ -6,7 +6,7 @@ class LayoutAndStylingTest(FunctionalTest):
 
 	def test_layout_and_styling(self):
 		#小明访问首页
-		self.browser.get(self.live_server_url)
+		self.browser.get(self.server_url)
 		self.browser.set_window_size(1024,768)
 
 		#他看到输入框完美地居中显示
